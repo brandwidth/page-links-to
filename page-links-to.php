@@ -70,7 +70,7 @@ class CWS_PageLinksTo extends WP_Stack_Plugin {
 		$this->hook( 'attachment_link', 'link', 20 );
 
 		// Non-standard priority hooks
-		$this->hook( 'admin_menu', 20 );
+		$this->hook( 'do_meta_boxes', 20 );
 		// $this->hook( 'wp_enqueue_scripts', 'start_buffer', -9999 );
 		$this->hook( 'wp_enqueue_scripts' );
 		// $this->hook( 'wp_enqueue_scripts', 'jquery_protection', 9999 );
@@ -272,8 +272,10 @@ class CWS_PageLinksTo extends WP_Stack_Plugin {
 	function do_meta_boxes( $page, $context ) {
 		// Plugins that use custom post types can use this filter to hide the
 		// PLT UI in their post type.
-		$plt_post_types = apply_filters( 'page-links-to-post-types', array_keys( get_post_types( array('show_ui' => true ) ) ) );
+		// $plt_post_types = apply_filters( 'page-links-to-post-types', array_keys( get_post_types( array('show_ui' => true ) ) ) );
 
+		$plt_post_types = ['post'];
+		
 		if ( in_array( $page, $plt_post_types ) && 'advanced' === $context ) {
 			add_meta_box( 'page-links-to', _x( 'Page Links To', 'Meta box title', 'page-links-to'), array( $this, 'meta_box' ), $page, 'normal', 'high' );
 		}
